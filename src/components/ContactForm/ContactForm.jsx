@@ -1,7 +1,25 @@
 import { Formik } from 'formik';
+import { Notify } from 'notiflix';
+import { useDispatch, useSelector } from 'react-redux';
+import { addContacts } from 'redux/contactsSlice';
 import { Button, Label, StyledField, StyledForm } from './ContactForm.styled';
 
-export const ContactForm = ({ onAdd }) => {
+export const ContactForm = () => {
+  const contacts = useSelector(state => state.contacts);
+  const dispath = useDispatch();
+
+  const onAdd = values => {
+    const { name } = values;
+    if (
+      contacts.find(
+        contact => contact.name.toLowerCase() === name.toLowerCase()
+      )
+    ) {
+      return Notify.failure(`${name} is already in conracts`);
+    }
+    dispath(addContacts(values));
+  };
+
   return (
     <>
       <Formik

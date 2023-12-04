@@ -1,6 +1,10 @@
+import { useDispatch, useSelector } from 'react-redux';
+import { changeFilter } from 'redux/filterSlice';
 import { Field, Text } from './Filte.styled';
 
-export const Filter = ({ filter, onInput }) => {
+export const Filter = () => {
+  const filter = useSelector(state => state.filter.values);
+  const dispath = useDispatch();
   return (
     <>
       <Text>Find contacts by name</Text>
@@ -8,7 +12,7 @@ export const Filter = ({ filter, onInput }) => {
         type="text"
         name="filter"
         value={filter}
-        onChange={evt => onInput(evt.target)}
+        onChange={evt => dispath(changeFilter(evt.target.value))}
       />
     </>
   );
